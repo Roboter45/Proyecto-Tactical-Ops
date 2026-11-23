@@ -1,0 +1,17 @@
+tactical-ops-pyxel/
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── src/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── states/
+│   │   └── __init__.py
+│   ├── entities/
+│   │   └── __init__.py
+│   ├── systems/
+│   │   └── __init__.py
+│   └── levels/
+│       └── __init__.py
+└── assets/
+    └── .gitkeep
