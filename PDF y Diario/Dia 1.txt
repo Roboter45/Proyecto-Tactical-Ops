@@ -1,0 +1,55 @@
+DIA 1: Hemos montado la base del proyecto Tactical Ops con Pyxel, configurado el control de versiones en Git/GitHub e implementado la primera versión de la máquina de estados con transición de pantallas.
+
+======================================================================
+1. ESTRUCTURA DEL PROYECTO Y CONTROL DE VERSIONES (GIT / GITHUB)
+======================================================================
+- Qué hemos hecho:
+  * Organizamos el proyecto en carpetas por responsabilidad (src/states, src/entities, src/systems, src/levels, assets), junto con requirements.txt y .gitignore.
+  * Inicializamos el repositorio local con `git init`, configuramos identidad (`user.name` y `user.email`), resolvimos la sincronización inicial con el remoto (`git pull origin main --allow-unrelated-histories`) y subimos los cambios a GitHub (`Proyecto-Tactical-Ops`).
+  * Identificamos los estados de archivos en VS Code: U (Untracked / archivo nuevo) y M (Modified / archivo modificado).
+
+- Por qué se hace así:
+  * Separar por carpetas evita que todo crezca en un único archivo difícil de mantener.
+  * El `.gitignore` evita subir carpetas temporales o del entorno como `.venv/` y `__pycache__/`.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Estructuré el proyecto separando estados, entidades, sistemas y niveles para mantener el código modular desde el inicio, configuré Git/GitHub para llevar un historial de versiones limpio y usé .gitignore para excluir el entorno virtual y archivos temporales."
+
+======================================================================
+2. ENTORNO VIRTUAL Y BUCLE PRINCIPAL DE PYXEL (src/main.py)
+======================================================================
+- Qué hemos hecho:
+  * Trabajamos dentro del entorno virtual (`.venv`) con `pyxel` instalado.
+  * Configuramos `GameApp` para inicializar la ventana (`160x128`) y arrancar el bucle principal mediante `pyxel.run(self.update, self.draw)`.
+
+- Por qué se hace así:
+  * Separar `update` (lógica, entrada de teclado y transiciones) de `draw` (dibujo en pantalla) mantiene el flujo claro y ordenado en cada fotograma.
+
+- Cómo explicarlo al tutor / tribunal:
+  "La clase GameApp inicializa la ventana de Pyxel y ejecuta el bucle principal dividiendo la actualización de la lógica (`update`) del renderizado (`draw`)."
+
+======================================================================
+3. MÁQUINA DE ESTADOS Y NAVEGACIÓN DE PANTALLAS
+======================================================================
+- Qué hemos hecho:
+  * Creamos `BaseState` (clase abstracta en `src/states/base_state.py`) definiendo la interfaz común con `update` y `draw`.
+  * Creamos `TitleState` (`src/states/title_state.py`) y `BriefingState` (`src/states/briefing_state.py`).
+  * Conectamos el cambio de pantalla con `self.app.set_state(...)` usando `pyxel.btnp(pyxel.KEY_RETURN)` / `pyxel.btnp(pyxel.KEY_SPACE)` para avanzar y `pyxel.btnp(pyxel.KEY_B)` para volver.
+
+- Por qué se hace así:
+  * Encapsular cada pantalla en su propio estado evita llenar `main.py` de condicionales y facilita añadir futuras fases (combate, tienda, etc.).
+  * `pyxel.btnp` detecta una pulsación puntual en el fotograma, evitando cambios accidentales al mantener pulsada una tecla.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Implementé una máquina de estados basada en una clase abstracta `BaseState` para que cada pantalla gestione su propia lógica y dibujo, delegando el cambio de estado en `GameApp`."
+
+======================================================================
+4. DETALLES PRÁCTICOS OBSERVADOS EN PRUEBAS
+======================================================================
+- `__pycache__/`: carpeta generada automáticamente por Python con archivos `.pyc` (caché de bytecode al importar módulos). Es normal y queda ignorada por Git.
+- Teclas de control: en las pruebas vimos que `ESC` y `SUPR` no respondían como se esperaba en ese equipo/teclado, mientras que usar teclas estándar como `ENTER`, `ESPACIO` y `B` funcionó de forma fiable.
+
+======================================================================
+PRÓXIMO PUNTO DE CONTROL SUGERIDO
+======================================================================
+- Hacer `git add .`, `git commit -m "feat: add base state machine and briefing screen transition"` y `git push` para dejar este avance guardado en GitHub cuando quieras retomarlo.
