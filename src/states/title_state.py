@@ -10,5 +10,7 @@ class TitleState(BaseState):
 
     def draw(self) -> None:
         pyxel.cls(1)
-        pyxel.text(44, 52, "TACTICAL OPS", 7)
-        pyxel.text(20, 68, "Pulsa ENTER o ESPACIO", 10)
+        title = "TACTICAL OPS"
+        prompt = "Pulsa ENTER o ESPACIO"
+        pyxel.text((pyxel.width - len(title) * 4) // 2, 64, title, 7)
+        pyxel.text((pyxel.width - len(prompt) * 4) // 2, 84, prompt, 10)

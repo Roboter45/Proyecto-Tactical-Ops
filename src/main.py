@@ -11,9 +11,12 @@ from states.title_state import TitleState
 
 
 class GameApp:
+    WIDTH = 240
+    HEIGHT = 160
+
     def __init__(self) -> None:
+        pyxel.init(self.WIDTH, self.HEIGHT, title="Tactical Ops")
         self.state: BaseState = TitleState(self)
-        pyxel.init(160, 128, title="Tactical Ops")
         pyxel.run(self.update, self.draw)
 
     def set_state(self, new_state: BaseState) -> None:

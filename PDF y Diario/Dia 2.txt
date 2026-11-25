@@ -1,0 +1,46 @@
+DIA 2: Hemos ajustado la resolución del juego al estándar de Game Boy Advance (240x160), implementado el estado de Batalla (`BattleState`) y creado un cursor táctico por casillas con esquinas en forma de L.
+
+======================================================================
+1. RESOLUCIÓN NATIVA ESTILO GBA (240x160)
+======================================================================
+- Qué hemos hecho:
+  * Cambiamos la ventana principal en `src/main.py` de `160x128` a `240x160` píxeles (la resolución nativa de la Game Boy Advance, referencia de títulos como Fire Emblem: The Blazing Blade).
+  * Centramos dinámicamente los textos de `TitleState` usando `pyxel.width`.
+
+- Por qué se hace así:
+  * Con casillas (tiles) de `16x16` píxeles, una pantalla de `240x160` se divide de forma exacta en `15 columnas` (`240 / 16 = 15`) y `10 filas` (`160 / 16 = 10`), sin dejar bordes recortados ni píxeles sobrantes.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Adopté la resolución nativa de GBA (240x160) porque permite dividir el espacio de pantalla en una matriz exacta de 15x10 casillas de 16x16 píxeles, manteniendo fidelidad visual al género táctico clásico."
+
+======================================================================
+2. ESTADO DE BATALLA Y NAVEGACIÓN (BattleState)
+======================================================================
+- Qué hemos hecho:
+  * Creamos `src/states/battle_state.py` heredando de `BaseState`.
+  * Conectamos el flujo completo de pantallas:
+    Título (`TitleState`) -> Briefing (`BriefingState`) -> Batalla (`BattleState`), pudiendo retroceder con la tecla `B`.
+  * Corregimos un error de importación circular en `src/states/base_state.py` donde la clase se importaba a sí misma.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Amplié la máquina de estados incorporando `BattleState`, manteniendo el desacoplamiento entre pantallas: cada estado gestiona sus propios controles y renderizado sin que `main.py` conozca los detalles internos."
+
+======================================================================
+3. TABLERO LÓGICO Y CURSOR TÁCTICO EN L
+======================================================================
+- Qué hemos hecho:
+  * Implementamos el movimiento del cursor por coordenadas enteras de cuadrícula (`cursor_x` de `0` a `14`, `cursor_y` de `0` a `9`) usando flechas o `WASD`, con control de límites mediante `max()` y `min()`.
+  * Ocultamos las líneas de la rejilla para mantener un fondo limpio, manteniendo la lógica de casillas por debajo.
+  * Encapsulamos el dibujo del cursor en el método privado `_draw_cursor()`, pintando 4 esquinas en L con `pyxel.line()` en lugar de un cuadrado cerrado.
+
+- Por qué se hace así:
+  * Separar las coordenadas lógicas `(col, fila)` de los píxeles `(x, y)` simplifica cualquier cálculo futuro (distancias, alcance de movimiento o colisiones).
+  * El cursor en L deja libre el interior de la casilla para que, cuando añadamos unidades, el sprite no quede tapado por líneas.
+
+- Cómo explicarlo al tutor / tribunal:
+  "La lógica del tablero opera sobre índices discretos de matriz y solo transforma a píxeles en la fase de renderizado. Además, encapsulé el dibujo del cursor en un método auxiliar que traza esquinas en L para no ocultar el contenido de la casilla activa."
+
+======================================================================
+PRÓXIMO PUNTO DE CONTROL SUGERIDO
+======================================================================
+- Guardar este archivo en `PDF y Diario/Dia 2.txt` y subir los avances del Día 2 a GitHub con `git add .`, `git commit -m "feat: add GBA resolution and tactical L-cursor in battle state"` y `git push`.
