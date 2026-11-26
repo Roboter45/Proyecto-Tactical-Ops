@@ -1,0 +1,44 @@
+DIA 3: Hemos creado nuestra primera entidad jugable en forma de círculo dentro de su propio módulo (`src/entities/pj_prueba.py`) y hemos implementado la mecánica táctica de selección y movimiento por casillas en el tablero (`BattleState`).
+
+======================================================================
+1. CREACIÓN DE LA ENTIDAD DE PERSONAJE (src/entities/pj_prueba.py)
+======================================================================
+- Qué hemos hecho:
+  * Creamos el archivo `src/entities/pj_prueba.py` dentro de la carpeta `entities` y definimos la clase `PjPrueba`.
+  * Configuramos sus atributos básicos: coordenadas en la cuadrícula (`x`, `y`), nombre (`name`), color inicial (`color = 8`) y estado de selección (`selected = False`).
+  * Implementamos el método `draw(tile_size)` para calcular el centro exacto de la celda y dibujar al personaje con `pyxel.circ(...)`, añadiendo un anillo exterior blanco con `pyxel.circb(...)` cuando está seleccionado.
+
+- Por qué se hace así:
+  * Separar las entidades en `src/entities/` cumple con el principio de responsabilidad única: el personaje sabe cómo dibujarse y qué estado tiene, sin sobrecargar `BattleState`.
+  * Esta estructura facilita escalar el juego en el futuro para tener múltiples soldados, enemigos o distintos tipos de unidades instanciando objetos.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Encapsulé la lógica y representación visual del personaje en una clase independiente (`PjPrueba`) dentro de la carpeta `entities`, permitiendo reutilizarla y escalar fácilmente a múltiples unidades en el tablero."
+
+======================================================================
+2. INTERACCIÓN Y MOVIMIENTO TÁCTICO POR CASILLAS (src/states/battle_state.py)
+======================================================================
+- Qué hemos hecho:
+  * Importamos e instanciamos `PjPrueba` dentro de `BattleState`.
+  * Implementamos un flujo de selección y desplazamiento en dos pasos usando `pyxel.btnp(pyxel.KEY_E)` o `pyxel.btnp(pyxel.KEY_SPACE)`:
+    1. Si el personaje no está seleccionado y el cursor coincide con sus coordenadas (`self.cursor_x == self.character.x` y `self.cursor_y == self.character.y`), el personaje pasa a estado `selected = True` y cambia de color para dar feedback visual.
+    2. Mientras está seleccionado, el cursor sigue moviéndose libremente por la cuadrícula con WASD o flechas; al volver a pulsar `E` o `ESPACIO`, el personaje se desplaza a la nueva casilla del cursor y se deselecciona.
+  * Añadimos un texto guía dinámico en la parte inferior de la pantalla (`pyxel.text`) que indica la acción disponible según si hay o no una unidad seleccionada.
+
+- Por qué se hace así:
+  * Este sistema reproduce la jugabilidad clásica de los juegos de estrategia por turnos, permitiendo explorar el mapa con el cursor antes de confirmar la posición de destino de la unidad.
+  * El feedback visual (cambio de color, anillo de selección y texto dinámico) mejora la experiencia de usuario al dejar claro en qué estado se encuentra la acción.
+
+- Cómo explicarlo al tutor / tribunal:
+  "Implementé un sistema de selección y desplazamiento en dos fases dentro de `BattleState`, donde el cursor selecciona la unidad en su celda y confirma posteriormente la casilla de destino con retroalimentación visual en pantalla."
+
+======================================================================
+3. DEPURACIÓN Y DETALLES PRÁCTICOS OBSERVADOS EN PRUEBAS
+======================================================================
+- Errores de atributos (`AttributeError`): durante las pruebas detectamos fallos puntuales por nombres de variables no declaradas (`char_y`) o errores tipográficos (`self.detected` en lugar de `self.selected`), resolviéndolos al centralizar las propiedades dentro de `PjPrueba`.
+- Orden de renderizado en `draw()`: comprobamos que es importante dibujar primero el fondo (`pyxel.cls`), luego las entidades (`self.character.draw`) y por último el cursor (`self._draw_cursor`), para que el cursor siempre quede visible por encima del personaje.
+
+======================================================================
+PRÓXIMO PUNTO DE CONTROL SUGERIDO
+======================================================================
+- Hacer `git add .`, `git commit -m "feat: add PjPrueba entity with tile selection and movement"` y `git push` para guardar los avances del Día 3 en GitHub.

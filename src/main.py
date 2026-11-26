@@ -6,7 +6,7 @@ SRC_DIR = Path(__file__).resolve().parent
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from states.base_state import BaseState
+from states.base_state import BaseState 
 from states.title_state import TitleState
 
 
